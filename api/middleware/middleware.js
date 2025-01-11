@@ -1,3 +1,5 @@
+const User = require("../users/users-model");
+
 function logger(req, res, next) {
   const timeStamp = new Date().toLocaleDateString();
   const method = req.method;
@@ -6,10 +8,22 @@ function logger(req, res, next) {
   next();
 }
 
-function validateUserId(req, res, next) {
-  // DO YOUR MAGIC
-  console.log("validateUserId middleware");
-  next();
+async function validateUserId(req, res, next) {
+  try {
+    const user = await User.getById(req.params.id);
+    if (!user) {
+      res.status(404).json({
+        message: "No such user",
+      });
+    } else {
+      req.user = user;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "something went wrong",
+    });
+  }
 }
 
 function validateUser(req, res, next) {
