@@ -13,7 +13,7 @@ async function validateUserId(req, res, next) {
     const user = await User.getById(req.params.id);
     if (!user) {
       res.status(404).json({
-        message: "No such user",
+        message: "user not found",
       });
     } else {
       req.user = user;
@@ -27,26 +27,26 @@ async function validateUserId(req, res, next) {
 }
 
 function validateUser(req, res, next) {
-  const { name } = req.body
+  const { name } = req.body;
   if (!name || !name.trim()) {
     res.status(400).json({
-      message: "missing required name field"
-    })
+      message: "missing required name field",
+    });
   } else {
-    req.name = name.trim()
-    next()
+    req.name = name.trim();
+    next();
   }
 }
 
 function validatePost(req, res, next) {
-  const { text } = req.body
+  const { text } = req.body;
   if (!text || !text.trim()) {
     res.status(400).json({
-      message: "missing required text field"
-    })
+      message: "missing required text field",
+    });
   } else {
-    req.text = text.trim()
-    next()
+    req.text = text.trim();
+    next();
   }
 }
 
